@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+  sheetbar-api:
+    container_name: sheetbar-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/src:rw
+    env_file: env/dev.env
+    networks:
+      - sheetbar-network
+    ports:
+      - "5500:5000"
+    tty: true
+
+networks:
+  sheetbar-network:
+    external:
+      name: sheetbar
