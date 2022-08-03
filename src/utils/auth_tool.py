@@ -6,6 +6,7 @@ from orm.models import Member
 from utils.error_code import ErrorCode
 from utils.errors import ValidationError
 from utils.jwt_tool import JWTTool
+from auth.blacklist import BLACKLIST
 
 
 class AuthTool:
@@ -48,6 +49,17 @@ class AuthTool:
         member = Member.query.filter_by(email=email).first()
         if not member:
             raise ValidationError(error_code=ErrorCode.MEMBER_IS_NOT_EXIST)
+        if email in BLACKLIST:
+            raise ValidationError(error_code=ErrorCode.INVALID_TOKEN)
+
         return member
 
-
+    @classmethod
+    def block_token(cls, token):
+        try:
+            jti = JWTTool.decode_jwt(Config.JWT_SECRET_KEY, token=token)
+            BLACKLIST.add(jti["email"])
+            print(BLACKLIST)
+            return True
+        except:
+            return False
