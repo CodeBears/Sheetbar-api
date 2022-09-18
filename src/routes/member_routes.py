@@ -29,3 +29,15 @@ def member_register(payload):
         password=payload['password'],
     )
     return ResponseHandler.to_json(results=results)
+
+
+@app.route('/sign-out', methods=['POST'])
+@DataValidator.validate(schema=DataSchema.SIGN_OUT)
+def member_sign_out(payload):
+    """
+    用戶登出 JWT憑證無效
+    """
+    results = MemberHandler.sign_out(
+        token=payload["token"]
+    )
+    return ResponseHandler.to_json(results=results)

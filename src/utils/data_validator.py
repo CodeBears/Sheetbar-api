@@ -40,3 +40,7 @@ class DataSchema:
         'username': And(str, Regex(_USERNAME_PATTERN)),
         'password': And(str, Regex(_PASSWORD_PATTERN)),
     }, ignore_extra_keys=True)
+
+    SIGN_OUT = Schema({
+        "token": str
+    }, ignore_extra_keys=True)

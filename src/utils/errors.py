@@ -30,7 +30,8 @@ class _BaseError(Exception):
 
 class ValidationError(_BaseError):
     def __init__(self, message=None, error_code=None):
-        super(ValidationError, self).__init__(code=400, message=message, error_code=error_code)
+        super(ValidationError, self).__init__(
+            code=400, message=message, error_code=error_code)
 
 
 ###############################

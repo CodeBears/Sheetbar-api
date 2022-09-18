@@ -5,7 +5,7 @@ from utils.data_validator import DataValidator, DataSchema
 from utils.response_handler import ResponseHandler
 
 
-@app.route('/my-sheet', methods=['GET'])
+@app.route('/my-sheets', methods=['GET'])
 @DataValidator.validate()
 @AuthTool.get_member()
 def get_my_sheet_list(payload, member):
@@ -23,7 +23,7 @@ def get_my_sheet_list(payload, member):
     return ResponseHandler.to_json(results=results)
 
 
-@app.route('/sheet', methods=['GET'])
+@app.route('/sheets', methods=['GET'])
 @DataValidator.validate()
 def get_sheets(payload):
     """
@@ -42,7 +42,7 @@ def get_sheets(payload):
 @app.route('/sheet/<int:sheet_id>', methods=['GET'])
 def get_sheet_detail(sheet_id):
     """
-    所有譜
+    特定譜
     """
     results = SheetHandler.get_sheet_detail(
         sheet_id=sheet_id,

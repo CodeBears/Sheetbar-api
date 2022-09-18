@@ -19,3 +19,35 @@ networks:
   sheetbar-network:
     external:
       name: sheetbar
+
+# version: '3.5'
+
+# services:
+
+#   sheetbar_phpmyadmin:
+#     container_name: sheetbar_phpmyadmin
+#     image: phpmyadmin/phpmyadmin:4.9.4
+#     networks:
+#       - sheetbar-network
+#     environment:
+#       - PMA_HOST=sheetbar_mysql
+#     ports:
+#       - 8072:80
+
+#   sheetbar_mysql:
+#     container_name: sheetbar_mysql
+#     image: mysql:5.6
+#     networks:
+#       - sheetbar-network
+#     environment:
+#       - TZ=Asia/Taipei
+#       - MYSQL_ROOT_PASSWORD=root
+#     volumes:
+#       - ./db/mysql/mysql_data:/var/lib/mysql
+#       - ./config/mysql/my.cnf:/etc/mysql/my.cnf
+
+
+# networks:
+#   sheetbar-network:
+#     name: sheetbar
+#     driver: bridge

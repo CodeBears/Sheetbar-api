@@ -19,7 +19,8 @@ class Member(db.Model):
     password = db.Column(db.String(100), nullable=False, comment='密碼')
     update_datetime = db.Column(db.DateTime, nullable=False, server_default=func.now(), onupdate=func.now(),
                                 comment='更新時間')
-    create_datetime = db.Column(db.DateTime, nullable=False, server_default=func.now(), comment='建立時間')
+    create_datetime = db.Column(
+        db.DateTime, nullable=False, server_default=func.now(), comment='建立時間')
 
 
 class SheetFile(db.Model):
@@ -33,7 +34,8 @@ class SheetFile(db.Model):
     name = db.Column(db.String(100), nullable=False, comment='檔名')
     update_datetime = db.Column(db.DateTime, nullable=False, server_default=func.now(), onupdate=func.now(),
                                 comment='更新時間')
-    create_datetime = db.Column(db.DateTime, nullable=False, server_default=func.now(), comment='建立時間')
+    create_datetime = db.Column(
+        db.DateTime, nullable=False, server_default=func.now(), comment='建立時間')
 
 
 class Sheet(db.Model):
@@ -76,6 +78,8 @@ class Instrument(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, comment='樂器名')
+    title = db.Column(db.String(100), nullable=False, comment='譜名')  # TODO 存檔時加亂數
     update_datetime = db.Column(db.DateTime, nullable=False, server_default=func.now(), onupdate=func.now(),
                                 comment='更新時間')
-    create_datetime = db.Column(db.DateTime, nullable=False, server_default=func.now(), comment='建立時間')
+    create_datetime = db.Column(
+        db.DateTime, nullable=False, server_default=func.now(), comment='建立時間')

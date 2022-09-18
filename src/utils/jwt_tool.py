@@ -17,6 +17,7 @@ class JWTTool:
             'exp': datetime.now(tz=timezone.utc) + exp,
             **kwargs
         }
+        print(payload)
         return jwt.encode(payload=payload, key=secret_key, algorithm="HS256")
 
     @staticmethod
