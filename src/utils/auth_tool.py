@@ -1,3 +1,5 @@
+from functools import wraps
+
 import bcrypt
 from flask import request
 
@@ -12,6 +14,15 @@ class AuthTool:
     @staticmethod
     def _unicode_to_bytes(unicode_string):
         return bytes(unicode_string, 'utf-8')
+
+    @staticmethod
+    def _get_token_content():
+        prefix = 'Bearer'
+        header = request.headers.get('Authorization')
+        bearer, _, token = header.partition(' ')
+        if bearer != prefix:
+            raise ValidationError(error_code=ErrorCode.HEADER_FORMAT_ERROR)
+        return JWTTool.decode_jwt(Config.JWT_SECRET_KEY, token=token)
 
     @classmethod
     def hash_password(cls, password):
@@ -35,19 +46,19 @@ class AuthTool:
         return res
 
     @classmethod
-    def check_token(cls):
-        prefix = 'Bearer'
-        header = request.headers.get('Authorization')
-        bearer, _, token = header.partition(' ')
-        if bearer != prefix:
-            raise ValidationError(error_code=ErrorCode.HEADER_FORMAT_ERROR)
-        data = JWTTool.decode_jwt(Config.JWT_SECRET_KEY, token=token)
-        email = data.get('email')
-        if not email:
-            raise ValidationError(error_code=ErrorCode.INVALID_TOKEN)
-        member = Member.query.filter_by(email=email).first()
-        if not member:
-            raise ValidationError(error_code=ErrorCode.MEMBER_IS_NOT_EXIST)
-        return member
+    def get_member(cls):
+        def real_decorator(method, **kwargs):
+            @wraps(method)
+            def wrapper(*args, **kwargs):
+                token_content = cls._get_token_content()
+                email = token_content.get('email')
+                if not email:
+                    raise ValidationError(error_code=ErrorCode.INVALID_TOKEN)
+                member = Member.query.filter_by(email=email).first()
+                if not member:
+                    raise ValidationError(error_code=ErrorCode.MEMBER_IS_NOT_EXIST)
+                return method(*args, **kwargs, member=member)
 
+            return wrapper
 
+        return real_decorator
